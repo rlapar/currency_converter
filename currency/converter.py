@@ -18,10 +18,10 @@ class AmbiguousCurrencyError(Exception):
     def __str__(self):
         return str(self.message)
 
-class CurrencyConverter(object):    
+class CurrencyConverter(object):  
+    """Currency Converter class."""  
     def __init__(self):
         self._list_of_codes = list(CurrencyRates().get_rates('EUR').keys()) + [u'EUR']
-        #self._list_of_codes.sort()
         self._symbols = {}
         for code in self._list_of_codes: #create {symbol:[codes]} dict
             symbol = CurrencyCodes().get_symbol(code)
@@ -36,7 +36,7 @@ class CurrencyConverter(object):
             raise AmbiguousCurrencyError('Ambiguous options for {}: {}'.format(symbol, self._symbols[symbol]))
         return self._symbols[symbol][0]
 
-    def convert(self, amount, input_currency, output_currency=None): #Throws exceptions
+    def convert(self, amount, input_currency, output_currency=None):
         """Convert input currency to output currency or all known 
         currencies if output currency is None.
 
@@ -53,9 +53,9 @@ class CurrencyConverter(object):
         """
         if not amount or amount < 0:
             raise ValueError('Amount must be a non-negative number')
-        if input_currency not in self._list_of_codes: #try if it's a symbol or throw Exception
+        if input_currency not in self._list_of_codes: #try if it's a symbol or raise
             input_currency = self._symbol_to_code(input_currency)
-        if output_currency and output_currency not in self._list_of_codes: #try if it's a symbol or throw Exception
+        if output_currency and output_currency not in self._list_of_codes: #try if it's a symbol or raise
             output_currency = self._symbol_to_code(output_currency)
 
         conversion = {
