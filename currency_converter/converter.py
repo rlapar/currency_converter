@@ -36,7 +36,7 @@ class CurrencyConverter(object):
             raise AmbiguousCurrencyError('Ambiguous options for {}: {}'.format(symbol, self._symbols[symbol]))
         return self._symbols[symbol][0]
 
-    def convert(self, amount, input_currency, output_currency=None):
+    def convert(self, amount, input_currency, output_currency=None, precision=2):
         """Convert input currency to output currency or all known 
         currencies if output currency is None.
 
@@ -44,6 +44,7 @@ class CurrencyConverter(object):
             amount (float)
             input_currency (str)
             output_currency (str)
+            precision (int)
         Returns:
             dict: 
         Raises: 
@@ -60,16 +61,16 @@ class CurrencyConverter(object):
 
         conversion = {
             'input': {
-                'amount': amount,
+                'amount': round(amount, precision),
                 'currency': input_currency
             },
             'output': {}
         }
         if output_currency:
-            conversion['output'][output_currency] = CurrencyRates().convert(input_currency, output_currency, amount)
+            conversion['output'][output_currency] = round(CurrencyRates().convert(input_currency, output_currency, amount), precision)
         else:
             for code in self._list_of_codes:
                 if code != input_currency:
-                    conversion['output'][code] = CurrencyRates().convert(input_currency, code, amount)
+                    conversion['output'][code] = round(CurrencyRates().convert(input_currency, code, amount), precision)
         
         return conversion

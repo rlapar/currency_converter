@@ -2,11 +2,11 @@
 
 from flask import Flask, request, jsonify
 
-from currency.converter import CurrencyConverter, InvalidCurrencyError, AmbiguousCurrencyError
+from currency_converter.converter import CurrencyConverter, InvalidCurrencyError, AmbiguousCurrencyError
 
-app = Flask(__name__)
+application = Flask(__name__)
 
-@app.errorhandler(400)
+@application.errorhandler(400)
 def bad_request(message=None):
     response = jsonify({
         'error': message
@@ -14,7 +14,7 @@ def bad_request(message=None):
     response.status_code = 400
     return response
 
-@app.route('/currency_converter')
+@application.route('/currency_converter')
 def currency_converter():
     amount = request.args.get('amount', type=float)
     input_currency = request.args.get('input_currency')
@@ -33,8 +33,7 @@ def currency_converter():
     return jsonify(conversion)
 
 if __name__ == '__main__':
-    app.run(
+    application.run(
 		host='0.0.0.0',
-		port=5000,
-		debug=True
+		port=5000
 	)

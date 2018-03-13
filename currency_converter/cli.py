@@ -5,7 +5,7 @@ import sys
 
 import click
 
-from currency.converter import CurrencyConverter, InvalidCurrencyError, AmbiguousCurrencyError
+from currency_converter.converter import CurrencyConverter, InvalidCurrencyError, AmbiguousCurrencyError
 
 @click.command()
 @click.option('--amount', '-a', required=True, type=float, help='amount to convert')

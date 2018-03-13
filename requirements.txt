@@ -1,0 +1,6 @@
+click==6.7
+Flask==0.12.2
+forex-python==0.3.3
+pytest==3.4.1
+uWSGI==2.0.17
+
