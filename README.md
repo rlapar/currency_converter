@@ -1,6 +1,9 @@
 Currency Converter task for kiwi.com
 ===================
+[![Build Status](https://travis-ci.com/rlapar/currency_converter.svg?token=vUsoGc5nHkiRLYxMxxyK&branch=master)](https://travis-ci.com/rlapar/currency_converter)
+
 Assignment: https://gist.github.com/MichalCab/c1dce3149d5131d89c5bbddbc602777c
+
 # Installation
 ```
 python3 setup.py install
