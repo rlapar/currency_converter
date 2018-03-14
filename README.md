@@ -1,4 +1,4 @@
-urrency Converter task for kiwi.com
+Currency Converter task for kiwi.com
 ===================
 Assignment: https://gist.github.com/MichalCab/c1dce3149d5131d89c5bbddbc602777c
 # Installation
@@ -33,7 +33,7 @@ cd currency_converter
 uwsgi --ini wsgi_config.ini
 ```
 Config available at `currency_converter/wsgi_config.ini`.
-By default wsgi communicate with web server with socket `app.socket`.
+By default wsgi communicate with web server via socket `app.socket`.
 
 **Author**: Radovan Lapár
 
