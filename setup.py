@@ -12,7 +12,7 @@ setup(
         'click',
         'forex-python',
         'Flask',
-	'uWSGI'
+	    'uWSGI'
     ],
     setup_requires=[
         'pytest-runner'
