@@ -1,0 +1,5 @@
+.eggs/
+currency_converter/.webapp.py.swp
+currency_converter/__pycache__/
+tests/__pycache__/
+

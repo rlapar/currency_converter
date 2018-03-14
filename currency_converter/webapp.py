@@ -2,7 +2,7 @@
 
 from flask import Flask, request, jsonify
 
-from currency_converter.converter import CurrencyConverter, InvalidCurrencyError, AmbiguousCurrencyError
+from converter import CurrencyConverter, InvalidCurrencyError, AmbiguousCurrencyError
 
 application = Flask(__name__)
 
