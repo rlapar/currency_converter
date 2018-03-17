@@ -1,6 +1,5 @@
-import sys
-
-from setuptools import setup, find_packages
+from setuptools import find_packages
+from setuptools import setup
 
 setup(
     name='currency-converter-kiwi',
@@ -12,7 +11,7 @@ setup(
         'click',
         'forex-python',
         'Flask',
-	    'uWSGI'
+            'uWSGI'
     ],
     setup_requires=[
         'pytest-runner'

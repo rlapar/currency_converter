@@ -1,39 +1,61 @@
 #!/usr/bin/env python3
 
-from forex_python.converter import CurrencyCodes, CurrencyRates
 
 class InvalidCurrencyError(Exception):
     """Exception for not recognized currency."""
+
     def __init__(self, message):
         self.message = message
 
-    def __str__(self):
-        return str(self.message)
 
 class AmbiguousCurrencyError(Exception):
     """Exception for ambiguous currency."""
+
     def __init__(self, message):
         self.message = message
 
-    def __str__(self):
-        return str(self.message)
 
-class CurrencyConverter(object):  
-    """Currency Converter class."""  
-    def __init__(self):
-        self._list_of_codes = list(CurrencyRates().get_rates('EUR').keys()) + [u'EUR']
+class CurrencyConverter(object):
+    """Currency Converter class."""
+
+    def __init__(self, currency_codes, currency_rates):
+        """
+        Args:
+            currency_codes (forex_python.converter.CurrencyCodes)
+            currency_rates (forex_python.converter.CurrencyRates)
+        """
+        self._currency_codes = currency_codes
+        self._currency_rates = currency_rates
+        self._list_of_codes = list(
+            currency_rates.get_rates('EUR').keys()) + ['EUR']
+        self._initialize_symbols_dict()
+
+    def _initialize_symbols_dict(self):
         self._symbols = {}
-        for code in self._list_of_codes: #create {symbol:[codes]} dict
-            symbol = CurrencyCodes().get_symbol(code)
+        for code in self._list_of_codes:  # create {symbol:[codes]} dict
+            symbol = self._currency_codes.get_symbol(code)
             if symbol not in self._symbols.keys():
                 self._symbols[symbol] = []
             self._symbols[symbol].append(code)
 
-    def _symbol_to_code(self, symbol):
+    def symbol_to_code(self, symbol):
+        """Substitute symbol with 3 letter currency code
+
+        Args:
+            symbol (str)
+        Returns:
+            str: 3 letter currency code
+        Raises:
+            InvalidCurrencyError if currency is not recognized 
+            AmbiguousCurrencyError if currency symbol correspond to more than one currency
+        """
+        if symbol in self._list_of_codes:
+            return symbol
         if symbol not in self._symbols:
             raise InvalidCurrencyError('Invalid currency {}'.format(symbol))
         if len(self._symbols[symbol]) > 1:
-            raise AmbiguousCurrencyError('Ambiguous options for {}: {}'.format(symbol, self._symbols[symbol]))
+            raise AmbiguousCurrencyError(
+                'Ambiguous options for {}: {}'.format(symbol, self._symbols[symbol]))
         return self._symbols[symbol][0]
 
     def convert(self, amount, input_currency, output_currency=None, precision=2):
@@ -54,23 +76,19 @@ class CurrencyConverter(object):
         """
         if not amount or amount < 0:
             raise ValueError('Amount must be a non-negative number')
-        if input_currency not in self._list_of_codes: #try if it's a symbol or raise
-            input_currency = self._symbol_to_code(input_currency)
-        if output_currency and output_currency not in self._list_of_codes: #try if it's a symbol or raise
-            output_currency = self._symbol_to_code(output_currency)
-
-        conversion = {
-            'input': {
-                'amount': round(amount, precision),
-                'currency': input_currency
-            },
-            'output': {}
-        }
+        input_currency = self.symbol_to_code(input_currency)
         if output_currency:
-            conversion['output'][output_currency] = round(CurrencyRates().convert(input_currency, output_currency, amount), precision)
-        else:
-            for code in self._list_of_codes:
-                if code != input_currency:
-                    conversion['output'][code] = round(CurrencyRates().convert(input_currency, code, amount), precision)
-        
+            output_currency = self.symbol_to_code(output_currency)
+
+        conversion = {}
+        if output_currency:
+            conversion[output_currency] = round(
+                self._currency_rates.convert(input_currency, output_currency, amount), precision)
+            return conversion
+
+        for code in self._list_of_codes:
+            if code != input_currency:
+                conversion[code] = round(
+                    self._currency_rates.convert(input_currency, code, amount), precision)
+
         return conversion
