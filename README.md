@@ -36,7 +36,21 @@ cd currency_converter
 uwsgi --ini wsgi_config.ini
 ```
 Config available at `currency_converter/wsgi_config.ini`.
-By default wsgi communicate with web server via socket `app.socket`.
+By default wsgi communicate with web server via socket `app.sock`.
+
+NGINX config example:
+
+```
+server {
+        listen 80;
+        server_name SERVER_NAME;
+
+        location / {
+                include uwsgi_params;
+                uwsgi_pass unix:PATH_TO_APP_SOCK;
+        }
+}
+```
 
 **Author**: Radovan Lapár
 
