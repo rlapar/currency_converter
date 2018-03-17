@@ -25,7 +25,7 @@ def currency_converter():
         conversion = {
             'input': {
                 'amount': round(amount, 2),
-                'input': converter.symbol_to_code(input_currency)
+                'currency': converter.symbol_to_code(input_currency)
             },
             'output': converter.convert(amount, input_currency, output_currency)
         }
