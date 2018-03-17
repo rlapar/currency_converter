@@ -64,7 +64,7 @@ class TestConverter(object):
     def test_valid_currency_only_input(self):
         conversion = self._converter.convert(3, VALID_CURRENCY)
         assert conversion[VALID_CURRENCY_2] == 15
-        assert conversion[VALID_CURRENCY_3] ==  21
+        assert conversion[VALID_CURRENCY_3] == 21
         assert len(conversion.keys()) == 2
 
     def test_valid_currency(self):
