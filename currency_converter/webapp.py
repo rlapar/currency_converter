@@ -14,6 +14,15 @@ from converter import InvalidCurrencyError
 application = Flask(__name__)
 
 
+@application.errorhandler(400)
+def bad_request(message=None):
+    response = jsonify({
+        'error': message
+    })
+    response.status_code = 400
+    return response
+
+
 @application.route('/currency_converter')
 def currency_converter():
     amount = request.args.get('amount', type=float)
@@ -30,9 +39,9 @@ def currency_converter():
             'output': converter.convert(amount, input_currency, output_currency)
         }
     except ValueError as e:
-        return Response(str(e), status=400)
+        return bad_request(str(e))
     except (InvalidCurrencyError, AmbiguousCurrencyError) as e:
-        return Response(e.message, status=400)
+        return bad_request(e.message)
 
     return jsonify(conversion)
 
