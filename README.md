@@ -4,8 +4,6 @@ Currency Converter task for kiwi.com
 
 Assignment: https://gist.github.com/MichalCab/c1dce3149d5131d89c5bbddbc602777c
 
-Developed on Ubuntu 16.04 LTS
-
 # Installation
 ```
 python3 setup.py install
